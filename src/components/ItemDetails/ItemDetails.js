@@ -1,13 +1,24 @@
 import React, { Component } from "react";
 import { Button, Collapse, Well, Media, Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 export default class ItemDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      item: {}
     };
   }
+
+  componentDidMount() {
+    axios
+      .get("https://app.fakejson.com/q/6ip713p8?token=vizsQZmUWAhHhJxA7gBZvQ")
+      .then(json => {
+        this.setState({ item: json.data });
+      });
+  }
+
   render() {
     return (
       <div>
@@ -24,10 +35,18 @@ export default class ItemDetails extends Component {
             <Well>
               <Media>
                 <Media.Left>
-                  <img width={100} height={100} alt="thumbnail" src="" />
+                  <img
+                    width={100}
+                    height={100}
+                    alt="thumbnail"
+                    src={this.state.item.thumb}
+                  />
                 </Media.Left>
                 <Media.Body>
-                  <p>Some awesome product</p>
+                  <p>
+                    <strong>{this.state.item.name}</strong>
+                  </p>
+                  <p>{this.state.item.description}</p>
                   <Row className="show-grid">
                     <Col md={6}>
                       <strong>{`$${this.props.price}`}</strong>
